@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 				arguments.name.c_str(),
 				gpu,
 				(gpu * nprocs / ngpus),
-				((gpu + 1) * nprocs / ngpus)
+				((gpu + 1) * nprocs / ngpus - 1)
 				);
 	}
 }
