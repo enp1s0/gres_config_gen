@@ -1,4 +1,5 @@
 # SLURM GRES config generator
+This program generates SLURM GRES config.
 
 ## Requirements
 - CUDA Toolkit
