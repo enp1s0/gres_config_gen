@@ -1,0 +1,48 @@
+#!/bin/bash
+
+NUM_GPUS=$(nvidia-smi -L | wc -l)
+NUM_CORES=$(nproc)
+
+NAME="gpu"
+HEADER_FILENAME=""
+PRINT_USAGE=0
+
+while [[ $# -gt 0 ]]
+do
+	key="$1"
+
+	case $key in
+		-n|--name)
+			NAME="$2"
+			shift
+			shift
+			;;
+		-h|--header)
+			HEADER_FILENAME="$2"
+			shift
+			shift
+			;;
+		-u|--usage|*)
+			PRINT_USAGE=1
+			shift
+			shift
+			;;
+	esac
+done
+
+if [ $PRINT_USAGE -eq 1 ];then
+	echo "Usage:"
+	echo "gres_conf_gen [-n|--name DeviceName [Default:gpu]] [-h|--header HeaderFileName [Default:none]]"
+	exit 1
+fi
+
+if [[ ! -z "$HEADER_FILENAME" ]];then
+	cat $HEADER_FILENAME
+fi
+
+for gpu in $(seq 0 $(($NUM_GPUS - 1)));
+do
+	start_core=$(($gpu * $NUM_CORES / $NUM_GPUS))
+end_core=$((($gpu + 1) * $NUM_CORES / $NUM_GPUS - 1))
+	printf "Name=%-10s Device=/dev/nvidia%d CPUs=%d-%d\n" $NAME $gpu $start_core $end_core
+done
