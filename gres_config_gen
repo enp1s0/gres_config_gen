@@ -43,6 +43,6 @@ fi
 for gpu in $(seq 0 $(($NUM_GPUS - 1)));
 do
 	start_core=$(($gpu * $NUM_CORES / $NUM_GPUS))
-end_core=$((($gpu + 1) * $NUM_CORES / $NUM_GPUS - 1))
-	printf "Name=%-10s Device=/dev/nvidia%d CPUs=%d-%d\n" $NAME $gpu $start_core $end_core
+	end_core=$((($gpu + 1) * $NUM_CORES / $NUM_GPUS - 1))
+	printf "Name=%-10s File=/dev/nvidia%d CPUs=%d-%d\n" $NAME $gpu $start_core $end_core
 done
