@@ -13,8 +13,8 @@ struct arguments {
 };
 
 static struct argp_option options[] = {
-	{"header",    'h',  0,   0,  "filename of output header"},
-	{"name"  ,    'n',  0,   0,  "device name"},
+	{"header", 'h',  "FILENAME", 0, "filename of output header"},
+	{"name"  , 'n',  "NAME"    , 0, "device name"},
 	{0}
 };
 
