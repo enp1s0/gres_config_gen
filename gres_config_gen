@@ -6,6 +6,7 @@ NUM_CORES=$(nproc)
 NAME="gpu"
 HEADER_FILENAME=""
 PRINT_USAGE=0
+AUTODETECT=""
 
 while [[ $# -gt 0 ]]
 do
@@ -22,6 +23,11 @@ do
 			shift
 			shift
 			;;
+		-a|--autodetect)
+			AUTODETECT="$2"
+			shift
+			shift
+			;;
 		-u|--usage|*)
 			PRINT_USAGE=1
 			shift
@@ -32,7 +38,7 @@ done
 
 if [ $PRINT_USAGE -eq 1 ];then
 	echo "Usage:"
-	echo "gres_conf_gen [-n|--name DeviceName [Default:gpu]] [-h|--header HeaderFileName [Default:none]]"
+	echo "gres_conf_gen [-n|--name DeviceName [Default:gpu]] [-h|--header HeaderFileName [Default:none]] [-a|--autodetect AutoDetectOption [Default:none]]"
 	exit 1
 fi
 
@@ -46,3 +52,7 @@ do
 	end_core=$((($gpu + 1) * $NUM_CORES / $NUM_GPUS - 1))
 	printf "Name=%-10s File=/dev/nvidia%d CPUs=%d-%d\n" $NAME $gpu $start_core $end_core
 done
+
+if [[ -n "$AUTODETECT" ]]; then
+    echo "AutoDetect=$AUTODETECT"
+fi
